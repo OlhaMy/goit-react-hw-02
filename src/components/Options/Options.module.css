@@ -1,0 +1,26 @@
+.card {
+  display: flex;
+  gap: 15px;
+  text-align: center;
+  justify-content: center;
+}
+
+.button {
+  display: block;
+  cursor: pointer;
+  border-radius: 8px;
+  background-color: black;
+  color: bisque;
+  padding: 10px;
+  border-style: none;
+  margin-bottom: 20px;
+  box-shadow: 8px 8px 2px 1px rgba(0, 0, 100, 0.2);
+}
+.button:hover {
+  color: black;
+  background-color: bisque;
+}
+.button.active {
+  color: black;
+  background-color: bisque;
+}

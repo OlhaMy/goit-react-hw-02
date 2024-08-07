@@ -1,7 +1,7 @@
 import s from "./Notification.module.css";
 
 const Notification = ({ message }) => {
-  return <div>{message}</div>;
+  return <div className={s.massage}>{message}</div>;
 };
 
 export default Notification;

@@ -1,38 +1,56 @@
 import { useEffect, useState } from "react";
-
 import Description from "./Description/Description";
 import Feedback from "./Feedback/Feedback";
 import Options from "./Options/Options";
 import Notification from "./Notification/Notification";
 
-const feedback = {
-  good: 0,
-  neutral: 0,
-  bad: 0,
-};
+function App() {
+  const [feedback, setFeedback] = useState(() => {
+    const savedFeedback = localStorage.getItem("feedback");
+    return savedFeedback
+      ? JSON.parse(savedFeedback)
+      : { good: 0, neutral: 0, bad: 0 };
+  });
 
-// useEffect(() => {
-//   window.feedback;
-// });
-const updateFeedback = (feedbackType) => {
-  setFeedback((prev) => ({ ...prev, [feedbackType]: prev[feedbackType] + 1 }));
-};
+  useEffect(() => {
+    window.localStorage.setItem("feedback", JSON.stringify(feedback));
+  }, [feedback]);
 
-const totalFeedback = feedback.good + feedback.neutral + feedback.bad;
+  const updateFeedback = (feedbackType) => {
+    setFeedback((prev) => ({
+      ...prev,
+      [feedbackType]: prev[feedbackType] + 1,
+    }));
+  };
 
-export const App = () => {
+  const resetFeedback = () => {
+    setFeedback({ good: 0, neutral: 0, bad: 0 });
+  };
+
+  const totalFeedback = feedback.good + feedback.neutral + feedback.bad;
+  const positiveFeedback =
+    totalFeedback > 0 ? Math.round((feedback.good / totalFeedback) * 100) : 0;
+
   return (
-    <div>
+    <>
       <Description />
       <Options
         options={feedback}
         updateFeedback={updateFeedback}
         totalFeedback={totalFeedback}
+        resetFeedback={resetFeedback}
       />
-      <Feedback feedback={feedback} totalFeedback={totalFeedback} />
-      <Notification message={"No feedback yet"} />
-    </div>
+      {totalFeedback > 0 ? (
+        <Feedback
+          feedback={feedback}
+          totalFeedback={totalFeedback}
+          positiveFeedback={positiveFeedback}
+        />
+      ) : (
+        <Notification message={"No feedback yet"} />
+      )}
+    </>
   );
-};
+}
 
 export default App;
